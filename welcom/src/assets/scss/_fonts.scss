@@ -1,0 +1,31 @@
+@font-face {
+    font-family: 'NotoSerif';
+    src: url('~@/assets/fonts/NotoSerif-Bold.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Rubik Bold';
+    src: url('~@/assets/fonts/Rubik-Bold.ttf');
+    font-style: normal;;
+}
+@font-face {
+    font-family: 'Rubik Light';
+    src: url('~@/assets/fonts/Rubik-Light.ttf');
+    font-style: normal;
+}
+
+h1 {
+    font-family: NotoSerif;
+}
+
+p {
+    font-size: 17px;
+    font-family: Rubik Bold;
+}
+
+span {
+    font-family: Rubik Light;
+    font-size: 14px;
+}
