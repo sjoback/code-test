@@ -1,10 +1,10 @@
 import React, { createContext, useContext, ReactNode } from 'react';
 import useCart from '../../hooks/useCart';
-import usePostal from '../../hooks/usePostal';
+// import usePostal from '../../hooks/usePostal';
 import { Cart } from '../../types/Cart';
 import { DeliveryOption } from '../../types/DeliveryOption';
 
-interface CartContextType {
+interface AppContextType {
     setNewQuantity: (productId: string, quantity: number) => void;
     setNewDelivery: (deliveryId: string) => void;
     cart: Cart | undefined;
@@ -12,30 +12,30 @@ interface CartContextType {
     deliveryOptions: DeliveryOption[] | undefined;
 }
 
-const CartContext = createContext<CartContextType | undefined>(undefined);
+const AppContext = createContext<AppContextType | undefined>(undefined);
 
-export const useCartContext = (): CartContextType => {
-    const context = useContext(CartContext);
+export const useAppContext = (): AppContextType => {
+    const context = useContext(AppContext);
 
     if (!context) {
-        throw new Error('useCartContext must be used within a QuantityProvider');
+        throw new Error('useAppContext must be used within a QuantityProvider');
     }
     return context;
 };
 
-interface CartProviderProps {
+interface AppProviderProps {
     children: ReactNode;
 }
 
-export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
-    const { postal, setPostal } = usePostal();
+export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
+    // const { postal, setPostal } = usePostal();
     const { cart, loading: loadingCart, setDelivery, setQuantity, deliveryOptions } = useCart(postal);
 
     const setNewQuantity = (productId: string, quantity: number) => setQuantity(productId, quantity);
     const setNewDelivery = (deliveryId: string) => setDelivery(deliveryId);
 
     return (
-        <CartContext.Provider
+        <AppContext.Provider
             value={{
                 cart,
                 setNewQuantity,
@@ -45,6 +45,6 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
             }}
         >
             {children}
-        </CartContext.Provider>
+        </AppContext.Provider>
     );
 };

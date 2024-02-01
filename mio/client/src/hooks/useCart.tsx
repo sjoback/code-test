@@ -30,44 +30,34 @@ export default (postal) => {
         fetchData();
     }, []);
 
-    const setQuantity = useCallback(
-        async (productId: string, quantity: Number) => {
-            try {
-                console.log('setQuantity', productId, quantity);
+    const setQuantity = useCallback(async (productId: string, quantity: Number) => {
+        try {
+            console.log('setQuantity', productId, quantity);
 
-                setLoading(true);
+            setLoading(true);
 
-                const resp = await fetch(
-                    `${url}/${productId}/quantity/${quantity}`,
-                    {
-                        // app.put('/api/cart/:cartId/:id/quantity/:quantity'
-                        method: 'PUT',
-                    }
-                );
-                const data = await resp.json();
-                console.log(data);
+            const resp = await fetch(`${url}/${productId}/quantity/${quantity}`, {
+                // app.put('/api/cart/:cartId/:id/quantity/:quantity'
+                method: 'PUT',
+            });
+            const data = await resp.json();
 
-                setCart(data);
-            } catch (error) {
-                console.log('error:', error);
-            } finally {
-                setLoading(false);
-            }
-        },
-        []
-    );
+            setCart(data);
+        } catch (error) {
+            console.log('error:', error);
+        } finally {
+            setLoading(false);
+        }
+    }, []);
 
     const setDelivery = useCallback(async (deliveryId: string) => {
         try {
             setLoading(true);
 
-            const resp = await fetch(
-                `${CART_SERVICE_URL}/${MOCK_CART_ID}/delivery/${deliveryId}`,
-                {
-                    // app.post('/api/cart/:cartId/delivery/:deliveryId'
-                    method: 'POST',
-                }
-            );
+            const resp = await fetch(`${CART_SERVICE_URL}/${MOCK_CART_ID}/delivery/${deliveryId}`, {
+                // app.post('/api/cart/:cartId/delivery/:deliveryId'
+                method: 'POST',
+            });
             const data = await resp.json();
             console.log(data);
             setCart(data);

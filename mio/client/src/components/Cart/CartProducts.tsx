@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { Product } from '../../types/Product';
-import { useCartContext } from './CartContext';
+import { useAppContext } from '../Context';
 
 interface CartProducts {
     // cart: { products: Product[] };
@@ -9,7 +9,7 @@ interface CartProducts {
 
 // const CartProducts: React.FC<CartProducts> = ({ cart, setQuantity }) => {
 const CartProducts: React.FC<CartProducts> = () => {
-    const { cart } = useCartContext();
+    const { cart } = useAppContext();
     if (!cart) return null;
 
     return (
@@ -36,7 +36,7 @@ const CartProduct = ({
     quantity,
     // setQuantity,
 }) => {
-    const { setNewQuantity } = useCartContext();
+    const { setNewQuantity } = useAppContext();
 
     // const handleQuantity = useCallback(
     //     (newQuantity: number) => {
@@ -63,10 +63,7 @@ const CartProduct = ({
             }}
         >
             <div style={{ width: '78px', height: '78px' }}>
-                <img
-                    src={imageUrl}
-                    style={{ width: '100%', maxHeight: '100%' }}
-                />
+                <img src={imageUrl} style={{ width: '100%', maxHeight: '100%' }} />
             </div>
             <div
                 style={{
@@ -75,17 +72,11 @@ const CartProduct = ({
                     flex: '1 1 auto',
                 }}
             >
-                <div style={{ flex: '1 1 auto', marginRight: '16px' }}>
-                    {name}
-                </div>
+                <div style={{ flex: '1 1 auto', marginRight: '16px' }}>{name}</div>
                 <div style={{ flex: '0 0 144px' }}>
-                    <button onClick={() => handleQuantity(quantity - 1)}>
-                        -
-                    </button>
+                    <button onClick={() => handleQuantity(quantity - 1)}>-</button>
                     <span style={{ margin: '16px' }}>{`${quantity} st`}</span>
-                    <button onClick={() => handleQuantity(quantity + 1)}>
-                        +
-                    </button>
+                    <button onClick={() => handleQuantity(quantity + 1)}>+</button>
                 </div>
                 <div
                     style={{
@@ -94,11 +85,7 @@ const CartProduct = ({
                         alignItems: 'flex-end',
                     }}
                 >
-                    {originalPrice !== price && (
-                        <span style={{ textDecoration: 'line-through' }}>
-                            {`${originalPrice}:-`}
-                        </span>
-                    )}
+                    {originalPrice !== price && <span style={{ textDecoration: 'line-through' }}>{`${originalPrice}:-`}</span>}
                     {`${price}:-`}
                 </div>
             </div>
