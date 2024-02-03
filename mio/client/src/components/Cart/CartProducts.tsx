@@ -1,94 +1,73 @@
-import React, { useCallback, useEffect } from 'react';
+import React from 'react';
 import { Product } from '../../types/Product';
 import { useAppContext } from '../Context';
+import StyledCartProduct from './CartProduct.styled';
+import StyledContainer from '../StyledComponents/StyledContainer.styled';
+import { Cart } from '../../types/Cart';
 
-interface CartProducts {
-    // cart: { products: Product[] };
-    // setQuantity: (id: string, quantity: number) => void;
-}
-
-// const CartProducts: React.FC<CartProducts> = ({ cart, setQuantity }) => {
-const CartProducts: React.FC<CartProducts> = () => {
+const CartProducts: React.FC = () => {
     const { cart } = useAppContext();
+
     if (!cart) return null;
 
     return (
-        <div>
+        <StyledContainer>
             {cart.products.map((product: Product) => (
                 <CartProduct
                     {...product}
-                    // setQuantity={setQuantity}
                     key={product.id}
                 />
             ))}
-        </div>
+        </StyledContainer>
     );
 };
 
 export default CartProducts;
 
-const CartProduct = ({
-    id,
-    name,
-    price,
-    originalPrice,
-    imageUrl,
-    quantity,
-    // setQuantity,
-}) => {
-    const { setNewQuantity } = useAppContext();
-
-    // const handleQuantity = useCallback(
-    //     (newQuantity: number) => {
-    //         // setQuantity(id, newQuantity);
-    //         console.log(`Render ${name}`, newQuantity);
-    //     },
-    //     [id, quantity, setQuantity]
-    // );
+const CartProduct = ({ id, name, price, originalPrice, imageUrl, quantity }) => {
+    const { cart, setCart, setQuantity } = useAppContext();
 
     const handleQuantity = (newQuantity: number) => {
-        // Only call setQuantity if the quantity has changed
-        if (newQuantity !== quantity) {
-            setNewQuantity(id, newQuantity);
-            // console.log(`Render ${name}`, newQuantity);
-        }
+        if (newQuantity !== quantity) setQuantity(id, newQuantity);
+    };
+
+    const removeProduct = (productId: string) => {
+        const newCart: Cart = {
+            ...cart,
+        };
+        newCart.products = cart?.products.filter((product: Product) => product.id !== productId);
+        setCart(newCart);
     };
 
     return (
-        <div
-            style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-around',
-            }}
-        >
-            <div style={{ width: '78px', height: '78px' }}>
-                <img src={imageUrl} style={{ width: '100%', maxHeight: '100%' }} />
+        <StyledCartProduct>
+            <div className="productImage">
+                <img src={imageUrl} />
             </div>
-            <div
-                style={{
-                    marginLeft: '48px',
-                    display: 'flex',
-                    flex: '1 1 auto',
-                }}
-            >
-                <div style={{ flex: '1 1 auto', marginRight: '16px' }}>{name}</div>
-                <div style={{ flex: '0 0 144px' }}>
+
+            <div className="productInfo">
+                <div className="name">{name}</div>
+
+                <div className="quantity">
                     <button onClick={() => handleQuantity(quantity - 1)}>-</button>
-                    <span style={{ margin: '16px' }}>{`${quantity} st`}</span>
+                    <span>{`${quantity} st`}</span>
                     <button onClick={() => handleQuantity(quantity + 1)}>+</button>
                 </div>
-                <div
-                    style={{
-                        flex: '0 0 auto',
-                        flexBasis: '100px',
-                        alignItems: 'flex-end',
-                    }}
-                >
-                    {originalPrice !== price && <span style={{ textDecoration: 'line-through' }}>{`${originalPrice}:-`}</span>}
-                    {`${price}:-`}
+
+                <div className="price">
+                    {originalPrice !== price && (
+                        <span
+                            className="price-old"
+                            style={{}}
+                        >{`${originalPrice}:-`}</span>
+                    )}
+                    <b>{`${price}:-`}</b>
                 </div>
+
+                <button onClick={() => removeProduct(id)}>
+                    x<div className="tooltip">Remove product</div>
+                </button>
             </div>
-        </div>
+        </StyledCartProduct>
     );
 };
