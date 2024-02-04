@@ -1,7 +1,9 @@
 const express = require('express');
 var cors = require('cors');
+const { log } = require('console');
 const app = express();
 const port = 8081;
+
 
 const MOCK_CART_ID = 'MOCK_CART_ID';
 
@@ -44,6 +46,57 @@ const homeDelivery = {
 }
 
 app.use(cors());
+
+app.get('/', (req, res) => {
+  // Simulate a server response
+  const serverResponse = { message: 'Hello from the server!' };
+
+  // Render the React component on the server
+  const { App } = require('../client/src/components/App'); // Replace with the path to your React component
+
+  const appHtml = ReactDOMServer.renderToString(<App serverResponse={serverResponse} />);
+
+  // Send the server-rendered HTML to the client
+  res.send(`
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <title>React SSR App</title>
+    </head>
+    <body>
+      <div id="root">${appHtml}</div>
+      <script src="/client.js"></script>
+    </body>
+    </html>
+  `);
+});
+
+app.use(express.static('public')); // Serve static files (e.g., client.js)
+
+// app.get('/api/', (req, res) => {
+//   res.contentType('application/json').send('cart');
+// return
+//   res.send(`
+//     <html>
+//       <head>
+//           <title>Mio checkout</title>
+//       </head>
+
+//       <body>
+//         <img
+//             src="https://www.mcdn.net/resources/shipping/MIO_STORE_PICKUP_66363011-6e1b-4494-834e-b236e1dd45d7.svg"
+//             alt="Mio!"
+//             loading="eager"
+//             style="max-width: 150px;"
+//         />
+
+//         <div id="root"></div>
+//       </body>
+//       <script src="/index.js"></script>
+//     </html>
+//   `);
+// });
 
 app.get('/api/cart/:cartId', (req, res) => {
   const cartId = req.params.cartId;

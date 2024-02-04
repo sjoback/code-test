@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Cart } from '../types/Cart';
 import { DeliveryOption } from '../types/DeliveryOption';
-import { Product } from '../types/Product';
 
 const MOCK_CART_ID = 'MOCK_CART_ID';
 const CART_SERVICE_URL = 'http://localhost:8081/api/cart';

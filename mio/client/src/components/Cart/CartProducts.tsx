@@ -27,9 +27,9 @@ export default CartProducts;
 const CartProduct = ({ id, name, price, originalPrice, imageUrl, quantity }) => {
     const { cart, setCart, setQuantity } = useAppContext();
 
-    const handleQuantity = (newQuantity: number) => {
-        if (newQuantity !== quantity) setQuantity(id, newQuantity);
-    };
+    if (!cart) return;
+
+    const handleQuantity = (newQuantity: number) => (newQuantity !== quantity ? setQuantity(id, newQuantity) : null);
 
     const removeProduct = (productId: string) => {
         const newCart: Cart = {
